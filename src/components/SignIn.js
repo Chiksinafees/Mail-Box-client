@@ -2,12 +2,15 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [login, setlogin] = useState(false);
+  const [login, setlogin] = useState(true);
+
+  const history = useHistory();
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
@@ -20,13 +23,6 @@ const SignIn = () => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    const obj = {
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
-    console.log(obj);
-
     if (
       password.length <= 8 &&
       confirmPassword.length <= 8 &&
@@ -67,8 +63,9 @@ const SignIn = () => {
         .then((data) => {
           if (login) {
             console.log(data.idToken);
-            const regex = /[.@]/g;
-           // const emailId = data.email.replace(regex, "");
+            // const regex = /[.@]/g;
+            // const emailId = data.email.replace(regex, "");
+            history.replace("/DummyScreen");
           }
         })
         .catch((err) => {
