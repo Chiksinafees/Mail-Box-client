@@ -3,6 +3,9 @@ import { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import classes from "./SignIn.module.css";
+import { useDispatch } from "react-redux";
+import { mailActions } from "./store/MailStore";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +14,7 @@ const SignIn = () => {
   const [login, setlogin] = useState(true);
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
@@ -63,9 +67,16 @@ const SignIn = () => {
         .then((data) => {
           if (login) {
             console.log(data.idToken);
-            // const regex = /[.@]/g;
-            // const emailId = data.email.replace(regex, "");
-            history.replace("/DummyScreen");
+            const regex = /[.@]/g;
+            const emailId = data.email.replace(regex, "");
+
+            dispatch(
+              mailActions.login({
+                email: emailId,
+                token: data.idToken,
+              })
+            );
+            history.replace("/SendMail");
           }
         })
         .catch((err) => {
@@ -87,7 +98,7 @@ const SignIn = () => {
     setlogin((prevState) => !prevState);
   };
   return (
-    <Container>
+    <Container className={classes.box}>
       <Form onSubmit={submitHandler}>
         <h1>{login ? "Login" : "Sign up"}</h1>
         <div>
