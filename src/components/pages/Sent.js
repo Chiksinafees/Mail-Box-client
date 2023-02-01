@@ -5,7 +5,6 @@ import { objActions } from "../store/ObjStore";
 import { useEffect, Fragment } from "react";
 import classes from "./MailInbox.module.css";
 const Sent = () => {
-  
   const history = useHistory();
 
   const loggedEmail = useSelector((currState) => currState.auth.email);
@@ -84,6 +83,23 @@ const Sent = () => {
     history.replace("/MailDetail");
   };
 
+  const deleteSentMailHandler = async (obj) => {
+    try {
+      const delSentMail = await fetch(
+        `https://mail-box-b419a-default-rtdb.firebaseio.com/${loggedEmail}/sent/${obj.id}.json`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await delSentMail.json();
+      getSentData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
   return (
     <Fragment>
       <h1 className="text-center">SENT</h1>
@@ -98,6 +114,14 @@ const Sent = () => {
                     {obj.text}
                   </td>
                   <td>{!!obj.read ? "read" : <b>"Unread"</b>}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={deleteSentMailHandler.bind(null, obj)}
+                    >
+                      del
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
