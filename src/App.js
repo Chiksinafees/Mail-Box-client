@@ -65,7 +65,7 @@ function App() {
       }
     );
     const data = await get.json();
-    console.log(data);
+    //console.log(data);
     let newArray = [];
     if (!!data) {
       newArray = Object.keys(data).map((mail) => {
@@ -86,7 +86,9 @@ function App() {
   };
   
   useEffect(() => {
-    getdata();
+    setInterval(() => {
+      getdata();
+    }, 2000);
   }, []);
 
 
