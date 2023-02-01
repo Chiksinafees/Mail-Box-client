@@ -68,7 +68,7 @@ const SendMail = () => {
     postData();
     setEmail("");
     setText("");
-    history.replace("/Sent");
+     history.replace("/Sent");
   };
 
   return (

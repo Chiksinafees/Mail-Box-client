@@ -12,9 +12,10 @@ const inboxSlice = createSlice({
     inboxHandler(currState, action) {
       currState.inbox = action.payload.newArray;
     },
+
     sentHandler(currState, action) {
       currState.sentbox = action.payload.newArray2;
-    },
+     },
 
     inboxMailRead(currState, action) {
       const index = currState.inbox.findIndex((mail) => {
@@ -23,12 +24,12 @@ const inboxSlice = createSlice({
       currState.inbox[index] = { ...currState.inbox[index], read: true };
     },
 
-    sentMailRead(currState, action) {
-      const index = currState.sentbox.findIndex((mail) => {
-        return mail.id === action.payload;
-      });
-      currState.sentbox[index] = { ...currState.sentbox[index], read: true };
-    },
+     sentMailRead(currState, action) {
+       const index = currState.sentbox.findIndex((mail) => {
+         return mail.id === action.payload;
+       });
+       currState.sentbox[index] = { ...currState.sentbox[index], read: true };
+     },
   },
 });
 

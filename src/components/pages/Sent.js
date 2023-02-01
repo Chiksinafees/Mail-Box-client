@@ -4,14 +4,18 @@ import { inboxActions } from "../store/InboxStore";
 import { objActions } from "../store/ObjStore";
 import { useEffect, Fragment } from "react";
 import classes from "./MailInbox.module.css";
+
 const Sent = () => {
+  console.log('sentttttttttttt')
+
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const loggedEmail = useSelector((currState) => currState.auth.email);
-  const dispatch = useDispatch();
-  const sentbox = useSelector((currState) => currState.array.sentbox);
+   const sentbox = useSelector((currState) => currState.array.sentbox);
 
   const getSentData = async () => {
+
     const sentMail = await fetch(
       `https://mail-box-b419a-default-rtdb.firebaseio.com/${loggedEmail}/sent.json`,
       {
@@ -33,19 +37,22 @@ const Sent = () => {
           read: data[mail].read,
         };
       });
-      dispatch(
-        inboxActions.sentHandler({
+      dispatch(inboxActions.sentHandler({
           newArray2: newArray2,
         })
       );
       dispatch(inboxActions.sentMailRead(newArray2));
     }
   };
+
+
   useEffect(() => {
     getSentData();
   }, []);
 
+
   const sentMailReadFetching = (mail) => {
+
     const updatedData = async (mail) => {
       try {
         const response = await fetch(
@@ -63,8 +70,6 @@ const Sent = () => {
         );
         const data = await response.json();
         console.log(data);
-        if (data) {
-        }
       } catch (error) {
         console.log(error);
       }
@@ -72,17 +77,22 @@ const Sent = () => {
     updatedData(mail);
   };
 
+
   const openSentMailHandler = (obj) => {
+  
     dispatch(objActions.objHandler(obj));
     dispatch(inboxActions.inboxMailRead(obj));
 
     const mail = sentbox.find((mail) => {
       return mail.id === obj.id;
     });
+  
     sentMailReadFetching(mail);
     history.replace("/MailDetail");
   };
 
+
+  
   const deleteSentMailHandler = async (obj) => {
     try {
       const delSentMail = await fetch(
@@ -100,6 +110,8 @@ const Sent = () => {
       alert(err.message);
     }
   };
+  
+  
   return (
     <Fragment>
       <h1 className="text-center">SENT</h1>

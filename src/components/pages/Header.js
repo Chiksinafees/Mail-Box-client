@@ -13,7 +13,6 @@ const Header = () => {
   const inbox = useSelector((currState) => currState.array.inbox);
   const sentbox = useSelector((currState) => currState.array.sentbox);
 
-
   const extractInboxValue = (inbox, read) => {
     let extractedInboxValue = inbox.map((mail) => mail[read]);
     return extractedInboxValue;
@@ -45,9 +44,9 @@ const Header = () => {
     history.replace("/SendMail");
   };
 
-  const sendHandler = () => {
-    history.replace("/Sent");
-  };
+   const sendHandler = () => {
+     history.replace("/Sent");
+   };
 
   return (
     <nav className="navbar navbar-dark bg-primary">
@@ -62,11 +61,13 @@ const Header = () => {
           Inbox ( {totalInboxUnread} )
         </Button>
       )}
+      
       {isloggedIn && (
-        <Button className="btn btn-warning " onClick={sendHandler}>
-          Sent Box ( {totalSentUnread} )
-        </Button>
-      )}
+         <Button className="btn btn-warning " onClick={sendHandler}>
+           Sent Box ( {totalSentUnread} )
+         </Button>
+       )}
+      
       <Button className="btn btn-warning float-right" onClick={logoutHandler}>
         Logout
       </Button>
