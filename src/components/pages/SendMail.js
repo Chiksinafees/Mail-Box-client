@@ -4,22 +4,25 @@ import JoditEditor from "jodit-react";
 import classes from "./SendMail.module.css";
 import { Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const SendMail = () => {
 
+  const history = useHistory();
   const currEmail = useSelector((currState) => currState.auth.email);
 
   const [email, setEmail] = useState("");
   const [text, setText] = useState("");
 
   const editor = useRef(null);
-
+  
   const sendEmailHandler = (e) => {
     setEmail(e.target.value);
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     const obj = {
       email: email,
       text: text,
@@ -35,6 +38,7 @@ const SendMail = () => {
           body: JSON.stringify({
             email: email,
             text: text,
+            read: false,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -51,6 +55,7 @@ const SendMail = () => {
           body: JSON.stringify({
             email: currEmail,
             text: text,
+            read: false,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -63,7 +68,9 @@ const SendMail = () => {
     postData();
     setEmail("");
     setText("");
+    history.replace("/Sent");
   };
+
   return (
     <Fragment>
       <h1 style={{ textAlign: "center" }}>SEND EMAIL:</h1>

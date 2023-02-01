@@ -76,7 +76,7 @@ const SignIn = () => {
                 token: data.idToken,
               })
             );
-            history.replace("/SendMail");
+            history.replace("/MailInbox");
           }
         })
         .catch((err) => {
@@ -96,6 +96,10 @@ const SignIn = () => {
 
   const switchAuthHandler = () => {
     setlogin((prevState) => !prevState);
+  };
+
+  const ForgotPasswordHandler = () => {
+    history.replace("/ForgotPassword");
   };
   return (
     <Container className={classes.box}>
@@ -136,6 +140,7 @@ const SignIn = () => {
         <Button variant="secondary" type="submit">
           {login ? "Login" : "Sign up"}
         </Button>
+        <p onClick={ForgotPasswordHandler}>Forgot Password? Reset</p>
         <h4 type="button" onClick={switchAuthHandler}>
           {login
             ? "Don't have an account?sign up"

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const inboxStore = {
   inbox: [],
+  sentbox: [],
 };
 
 const inboxSlice = createSlice({
@@ -9,10 +10,24 @@ const inboxSlice = createSlice({
   initialState: inboxStore,
   reducers: {
     inboxHandler(currState, action) {
-      // const regex = /[<p><strong>]/g;
-      // const emailId = action.payload.newArray[email].replace(regex, "");
-      console.log(action.payload.newArray);
       currState.inbox = action.payload.newArray;
+    },
+    sentHandler(currState, action) {
+      currState.sentbox = action.payload.newArray2;
+    },
+
+    inboxMailRead(currState, action) {
+      const index = currState.inbox.findIndex((mail) => {
+        return mail.id === action.payload;
+      });
+      currState.inbox[index] = { ...currState.inbox[index], read: true };
+    },
+
+    sentMailRead(currState, action) {
+      const index = currState.sentbox.findIndex((mail) => {
+        return mail.id === action.payload;
+      });
+      currState.sentbox[index] = { ...currState.sentbox[index], read: true };
     },
   },
 });

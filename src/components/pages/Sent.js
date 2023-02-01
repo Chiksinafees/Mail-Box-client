@@ -1,20 +1,20 @@
-import { Fragment, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { inboxActions } from "../store/InboxStore";
-import { useHistory } from "react-router-dom";
 import { objActions } from "../store/ObjStore";
+import { useEffect, Fragment } from "react";
 import classes from "./MailInbox.module.css";
-
-const MailInbox = () => {
+const Sent = () => {
+  
   const history = useHistory();
 
   const loggedEmail = useSelector((currState) => currState.auth.email);
   const dispatch = useDispatch();
-  const inbox = useSelector((currState) => currState.array.inbox);
+  const sentbox = useSelector((currState) => currState.array.sentbox);
 
-  const getdata = async () => {
-    const get = await fetch(
-      `https://mail-box-b419a-default-rtdb.firebaseio.com/${loggedEmail}/inbox.json`,
+  const getSentData = async () => {
+    const sentMail = await fetch(
+      `https://mail-box-b419a-default-rtdb.firebaseio.com/${loggedEmail}/sent.json`,
       {
         method: "GET",
         headers: {
@@ -22,11 +22,11 @@ const MailInbox = () => {
         },
       }
     );
-    const data = await get.json();
+    const data = await sentMail.json();
     console.log(data);
-    let newArray = [];
+    let newArray2 = [];
     if (!!data) {
-      newArray = Object.keys(data).map((mail) => {
+      newArray2 = Object.keys(data).map((mail) => {
         return {
           id: mail,
           email: data[mail].email,
@@ -35,22 +35,22 @@ const MailInbox = () => {
         };
       });
       dispatch(
-        inboxActions.inboxHandler({
-          newArray: newArray,
+        inboxActions.sentHandler({
+          newArray2: newArray2,
         })
       );
-      dispatch(inboxActions.inboxMailRead(newArray));
+      dispatch(inboxActions.sentMailRead(newArray2));
     }
   };
   useEffect(() => {
-    getdata();
+    getSentData();
   }, []);
 
-  const inboxMailReadFetching = (mail) => {
-    const updateData = async (mail) => {
+  const sentMailReadFetching = (mail) => {
+    const updatedData = async (mail) => {
       try {
         const response = await fetch(
-          `https://mail-box-b419a-default-rtdb.firebaseio.com/${loggedEmail}/inbox/${mail.id}.json`,
+          `https://mail-box-b419a-default-rtdb.firebaseio.com/${loggedEmail}/sent/${mail.id}.json`,
           {
             method: "PUT",
             body: JSON.stringify({
@@ -64,35 +64,39 @@ const MailInbox = () => {
         );
         const data = await response.json();
         console.log(data);
+        if (data) {
+        }
       } catch (error) {
         console.log(error);
       }
     };
-    updateData(mail);
+    updatedData(mail);
   };
 
-  const openMailHandler = (obj) => {
+  const openSentMailHandler = (obj) => {
     dispatch(objActions.objHandler(obj));
     dispatch(inboxActions.inboxMailRead(obj));
 
-    const mail = inbox.find((mail) => {
+    const mail = sentbox.find((mail) => {
       return mail.id === obj.id;
     });
-    inboxMailReadFetching(mail);
+    sentMailReadFetching(mail);
     history.replace("/MailDetail");
   };
 
   return (
     <Fragment>
-      <h1 className="text-center">INBOX</h1>
+      <h1 className="text-center">SENT</h1>
       <ul>
-        {inbox.map((obj) => (
+        {sentbox.map((obj) => (
           <div className={classes.email} key={obj.id}>
             <table className="table">
               <tbody>
                 <tr>
                   <td>{obj.email}</td>
-                  <td onClick={openMailHandler.bind(null, obj)}>{obj.text}</td>
+                  <td onClick={openSentMailHandler.bind(null, obj)}>
+                    {obj.text}
+                  </td>
                   <td>{!!obj.read ? "read" : <b>"Unread"</b>}</td>
                 </tr>
               </tbody>
@@ -104,4 +108,4 @@ const MailInbox = () => {
   );
 };
 
-export default MailInbox;
+export default Sent;
