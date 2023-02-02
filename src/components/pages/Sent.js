@@ -6,7 +6,6 @@ import { useEffect, Fragment } from "react";
 import classes from "./MailInbox.module.css";
 
 const Sent = () => {
-  console.log('sentttttttttttt')
 
   const history = useHistory();
   const dispatch = useDispatch();
