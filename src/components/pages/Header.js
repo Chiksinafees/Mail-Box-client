@@ -1,10 +1,8 @@
-import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { mailActions } from "../store/MailStore";
 import { useHistory } from "react-router-dom";
 
 const Header = () => {
-
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -21,7 +19,6 @@ const Header = () => {
   const unreadInboxMail = extractInboxValue(inbox, "read");
   unreadInboxMail.forEach((v) => (v ? v : totalInboxUnread++));
 
-
   const extractSentValue = (sentbox, read) => {
     let extractedSentValue = sentbox.map((mail) => mail[read]);
     return extractedSentValue;
@@ -30,7 +27,6 @@ const Header = () => {
   const unreadSentMail = extractSentValue(sentbox, "read");
   unreadSentMail.forEach((v) => (v ? v : totalSentUnread++));
 
-  
   const logoutHandler = () => {
     dispatch(mailActions.logout());
     history.replace("/");
@@ -44,34 +40,48 @@ const Header = () => {
     history.replace("/SendMail");
   };
 
-   const sendHandler = () => {
-     history.replace("/Sent");
-   };
+  const sendHandler = () => {
+    history.replace("/Sent");
+  };
 
   return (
-    <nav className="navbar navbar-dark bg-primary">
-      <h1>Mail Box </h1>
-      {isloggedIn && (
-        <Button className="btn btn-warning " onClick={composeHandler}>
-          Compose Mail
-        </Button>
-      )}
-      {isloggedIn && (
-        <Button className="btn btn-warning " onClick={inboxHandler}>
-          Inbox ( {totalInboxUnread} )
-        </Button>
-      )}
-      
-      {isloggedIn && (
-         <Button className="btn btn-warning " onClick={sendHandler}>
-           Sent Box ( {totalSentUnread} )
-         </Button>
-       )}
-      
-      <Button className="btn btn-warning float-right" onClick={logoutHandler}>
-        Logout
-      </Button>
-    </nav>
+    <header className="bg-gradient-to-r from-black from-20% via-sky-600 via-60% to-sky-300 to-90%">
+      <div className="container py-8 px-2 flex flex-wrap items-center justify-between mx-6">
+        <h1 className="text-white font-bold text-5xl font-serif">Mail Box</h1>
+        <div className="flex flex-col items-center justify-center md:flex-row md:items-center">
+          {isloggedIn && (
+            <button
+              className="text-white font-bold py-2 px-4 rounded-md mr-4 bg-gray-500 hover:bg-black transition-colors mb-2 md:mb-0 md:mr-8"
+              onClick={composeHandler}
+            >
+              Compose Mail
+            </button>
+          )}
+          {isloggedIn && (
+            <button
+              className="text-white font-bold py-2 px-4 rounded-md mr-4 bg-gray-500 hover:bg-black transition-colors mb-2 md:mb-0 md:mr-8"
+              onClick={inboxHandler}
+            >
+              Inbox ( {totalInboxUnread} )
+            </button>
+          )}
+          {isloggedIn && (
+            <button
+              className="text-white font-bold py-2 px-4 rounded-md mr-4 bg-gray-500 hover:bg-black transition-colors mb-2 md:mb-0 md:mr-8"
+              onClick={sendHandler}
+            >
+              Sent Box ( {totalSentUnread} )
+            </button>
+          )}
+          <button
+            className="text-white font-bold py-2 px-4 rounded-md mb-2 bg-gray-500 hover:bg-black transition-colors"
+            onClick={logoutHandler}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
   );
 };
 

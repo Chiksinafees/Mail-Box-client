@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import classes from "./SignIn.module.css";
 import { useDispatch } from "react-redux";
 import { mailActions } from "./store/MailStore";
 
@@ -102,10 +101,15 @@ const SignIn = () => {
     history.replace("/ForgotPassword");
   };
   return (
-    <Container className={classes.box}>
-      <Form onSubmit={submitHandler}>
-        <h1>{login ? "Login" : "Sign up"}</h1>
-        <div>
+    <Container className="flex justify-center items-center h-screen text-white">
+      <Form
+        onSubmit={submitHandler}
+        className="bg-gradient-to-r from-black to-gray-700 shadow-md rounded px-16 pt-6 pb-8 mb-4"
+      >
+        <h1 className="text-2xl mb-4 text-center">
+          {login ? "Login" : "Sign up"}
+        </h1>
+        <div className="mb-4">
           <Form.Group controlId="email">
             <Form.Label>Email:</Form.Label>
             <Form.Control
@@ -114,6 +118,7 @@ const SignIn = () => {
               value={email}
               onChange={emailHandler}
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
             />
           </Form.Group>
           <Form.Group controlId="password">
@@ -124,6 +129,7 @@ const SignIn = () => {
               value={password}
               onChange={passwordHandler}
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </Form.Group>
           <Form.Group controlId="confirm password">
@@ -134,17 +140,31 @@ const SignIn = () => {
               value={confirmPassword}
               onChange={confirmPasswordHandler}
               required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </Form.Group>
         </div>
-        <Button variant="secondary" type="submit">
+        <Button
+          variant="secondary"
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
           {login ? "Login" : "Sign up"}
         </Button>
-        <p onClick={ForgotPasswordHandler}>Forgot Password? Reset</p>
-        <h4 type="button" onClick={switchAuthHandler}>
+        <p
+          onClick={ForgotPasswordHandler}
+          className="text-sm text-gray-100 hover:text-gray-400 cursor-pointer mt-4"
+        >
+          Forgot Password? Reset
+        </p>
+        <h4
+          type="button"
+          onClick={switchAuthHandler}
+          className="text-sm text-gray-100 hover:text-gray-400 cursor-pointer mt-4"
+        >
           {login
-            ? "Don't have an account?sign up"
-            : "already have an account? login"}
+            ? "Don't have an account? Sign up"
+            : "Already have an account? Login"}
         </h4>
       </Form>
     </Container>
