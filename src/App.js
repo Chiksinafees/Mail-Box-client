@@ -17,7 +17,6 @@ const ForgotPassword = React.lazy(() =>
   import("./components/pages/ForgotPassword")
 );
 
-// checking multiple git working
 
 function App() {
   const isloggedIn = useSelector((currState) => currState.auth.isloggedIn);
